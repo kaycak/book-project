@@ -9,4 +9,6 @@ composer.phar
 /.phpintel
 tests/_output/*
 
+.idea
+
 
