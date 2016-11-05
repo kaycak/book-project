@@ -3,3 +3,10 @@
 Homestead.yaml
 Homestead.json
 .env
+/public/.htaccess
+composer.lock
+composer.phar
+/.phpintel
+tests/_output/*
+
+
