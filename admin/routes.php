@@ -10,9 +10,5 @@
 | and give it the controller to call when that URI is requested.
 |
 */
-Route::get('/', function() {
-	dd('test');
-});
 
-Route::get('{locale}/book/{book_id}', 'BooksController@index');
-
+Route::get('/', 'BooksController@index');
