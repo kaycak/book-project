@@ -5,6 +5,7 @@ namespace Admin\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use Admin\Http\Requests\BookRequest;
 use App\Http\Controllers\Controller;
 use Admin\Services\BookService;
 
@@ -22,7 +23,8 @@ class BooksController extends Controller
      */
     public function index(BookService $bookService)
     {
-        dd($bookService->getAllBooks());  
+        $books = $bookService->getAllBooks();
+        return view('admin.books.index', ['books' => $books]);
     }
 
     /**
@@ -32,7 +34,7 @@ class BooksController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.books.create');
     }
 
     /**
@@ -41,9 +43,12 @@ class BooksController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(BookRequest $request, BookService $bookService)
     {
-        //
+        if(null != $bookService->createBook($request->all())) {
+            return redirect('/books')->withSuccess('Book has been successfully created');
+        }
+        return redirect()->back()->withWarning('Ops. Somethin went wrong. Please try a later');
     }
 
     /**
