@@ -59,7 +59,8 @@ class BooksController extends Controller
      */
     public function show($id)
     {
-        //
+        $book = $bookService->getBookById($id);
+        return view('admin.books.show', ['book' => $book]);
     }
 
     /**
@@ -68,9 +69,10 @@ class BooksController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id, BookService $bookService)
     {
-        //
+        $book = $bookService->getBookById($id);
+        return view('admin.books.create', ['book' => $book]);
     }
 
     /**
@@ -80,9 +82,12 @@ class BooksController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id, BookService $bookService)
     {
-        //
+        if(null != $bookService->updateBook($id, $request->all())) {
+            return redirect('/books')->withSuccess('Book has been successfully updated');
+        }
+        return redirect()->back()->withWarning('Ops. Somethin went wrong. Please try a later');
     }
 
     /**
@@ -91,8 +96,11 @@ class BooksController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id, BookService $bookService)
     {
-        //
+        if($bookService->deletBookById($id)) {
+            return redirect('/books')->withSuccess('Book has been successfully deleted');
+        }
+        return redirect()->back()->withWarning('Ops. Somethin went wrong. Please try a later');
     }
 }

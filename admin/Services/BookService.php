@@ -28,13 +28,8 @@ class BookService
 	}
 
 	public function getFileName($file) {
-		$file_name = str_random(32). time(). '.' .$file->getClientOriginalExtension();
+		$file_name = str_random(32). '.' .$file->getClientOriginalExtension();
 		return $file_name;
-	}
-
-	public function uploadFile($file, $file_name) {
-		$file->move(public_path().'/images/book_images', $file_name);
-		return true;
 	}
 
 	public function getBookCreateParams($params, $file_name) {
@@ -44,10 +39,35 @@ class BookService
 		return $inputs;
 	}
 
+	public function getBookById($id) {
+		return $this->book->find($id);
+	}
+
+	public function updateBook($id, $params) {
+		$book = $this->getBookById($id);
+		if(isset($params['logo'])) {
+			$file = $params['logo'];
+			$file_name = $this->getFileName($file);
+			$params['logo'] = $file_name;
+			$file->move(public_path().'/images/book_images', $file_name);
+		}
+		$book->update($params);
+		if($book) {
+			return $book;
+		}
+		return null;	
+	}
+
+	public function deletBookById($id) {
+		$book = $this->getBookById($id);
+		return $book->delete();
+	}
+
+
 	public function uploadFileFromUrl($url) {
 		$name = basename($url);
 		list($txt, $ext) = explode(".", $name);
-		$name = str_random(32). time();
+		$name = str_random(32);
 		$name = $name.".".$ext;
 		//check if the files are only image
 		if($ext == "jpg" || $ext == "png"){
