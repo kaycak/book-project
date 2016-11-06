@@ -5,6 +5,7 @@ namespace Admin\Http\Controllers\Auth;
 use Illuminate\Contracts\Auth\Guard;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
+use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
@@ -27,6 +28,7 @@ class AuthController extends Controller
     {
         $this->middleware('guest', ['except' => 'logout']);
     }
+
     /**
      * Get a validator for an incoming registration request.
      *
@@ -36,6 +38,20 @@ class AuthController extends Controller
     public function getLogin()
     {
         return view('admin.auth.login');
+    }
+
+    /**
+     * Handle a login request to the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function postLogin(LoginRequest $request, Guard $auth)
+    {
+        if($auth->attempt(['email' => $request['email'], 'password' => $request['password']])) {
+            return redirect('/books')->withSuccess('You has been successfully logged in.');
+        }
+        return redirect()->back()->withInput()->withError(trans('auth.failed'));
     }
     
     /**

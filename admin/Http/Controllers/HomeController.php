@@ -21,7 +21,7 @@ class HomeController extends Controller
     public function dashboard()
     {
         if(!\Auth::check()) {
-            return redirect('login');
+            return redirect('/login');
         }
     }
 }
