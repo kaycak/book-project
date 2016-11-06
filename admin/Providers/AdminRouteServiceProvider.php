@@ -1,9 +1,7 @@
 <?php
-
 namespace Admin\Providers;
 use Illuminate\Routing\Router;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
-
 class AdminRouteServiceProvider extends ServiceProvider
 {
     /**
