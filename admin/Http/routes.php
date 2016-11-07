@@ -17,8 +17,10 @@ Route::get('/', 'HomeController@dashboard');
 Route::get('/login', 'Auth\AuthController@getLogin');
 Route::get('auth/login', 'Auth\AuthController@getLogin');
 Route::post('auth/login', 'Auth\AuthController@postLogin');
-Route::get('auth/logout', 'Auth\AuthController@getLogout');
+Route::get('/logout', 'Auth\AuthController@logout');
 
 Route::resource('/books', 'BooksController');
+Route::get('/book/{id}/add-pages', 'BooksController@addPage');
+Route::post('/book/{id}/add-pages', 'BooksController@postAddPage');
 
 

@@ -1,5 +1,8 @@
+<h2><a href="{{url('/logout')}}">Logout</a></h2>
+
 @include('alerts.messages')
-@foreach($books as $book)
+
+@forelse($books as $book)
 	<div>
 		{!! Form::open([ 'url' => url('books/'.$book->id), 'method' => 'DELETE' ]) !!}
 			<a href="{{url('books/create')}}">Add book</a>
@@ -19,8 +22,11 @@
 		@else
 			<img src="/images/book_images/default.jpg" height="50">
 		@endif
+        <p><a href="{{url('book/'.$book->id.'/add-pages')}}">Add pages for this book</a></p>
 	</div>
 	<br>
 	<hr>
 	
-@endforeach
+@empty
+    <a href="{{url('books/create')}}">Add book</a>
+@endforelse

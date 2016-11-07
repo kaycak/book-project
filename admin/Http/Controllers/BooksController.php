@@ -57,7 +57,7 @@ class BooksController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, BookService $bookService)
     {
         $book = $bookService->getBookById($id);
         return view('admin.books.show', ['book' => $book]);
@@ -102,5 +102,16 @@ class BooksController extends Controller
             return redirect('/books')->withSuccess('Book has been successfully deleted');
         }
         return redirect()->back()->withWarning('Ops. Somethin went wrong. Please try a later');
+    }
+
+    public function addPage($id, BookService $bookService)
+    {
+        $book = $bookService->getBookById($id);
+        return view('admin.books.add-page', ['book' => $book]);
+    }
+
+    public function postAddPage($id, BookService $bookService, Request $request)
+    {
+        dd($id, $request->all());
     }
 }

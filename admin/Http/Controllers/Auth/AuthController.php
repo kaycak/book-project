@@ -48,7 +48,11 @@ class AuthController extends Controller
      */
     public function postLogin(LoginRequest $request, Guard $auth)
     {
-        if($auth->attempt(['email' => $request['email'], 'password' => $request['password']])) {
+        $remember = false;
+        if(isset($request['remember'])) {
+            $remember = true;
+        }
+        if($auth->attempt(['email' => $request['email'], 'password' => $request['password']], $remember)) {
             return redirect('/books')->withSuccess('You has been successfully logged in.');
         }
         return redirect()->back()->withInput()->withError(trans('auth.failed'));

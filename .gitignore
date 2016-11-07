@@ -10,5 +10,7 @@ composer.phar
 tests/_output/*
 
 .idea
+/public/images/book_images
+
 
 
