@@ -83,21 +83,48 @@ class BookService
 	}
 
 	public function createPage($book_id, $params) {
-		$page_params = $this->getCreatePageParams($params);
+		$page_params = $this->getCreatePageParams($book_id, $params);
+        $line_params = $this->getCreateLineParams($book_id, $params, 1); //page_id for 1
 		dd($page_params);
 	}
 
-	public function getCreatePageParams($params) {
-		dd('a');
-		$i = 1;
-		$section = 'section';
-		$line = 'line_'
-		$sections = [];
-		$section_lines = [];
-		foreach ($params as $key => $value) {
-			if($key == $section.'_'.$i) {
-				$sections[$i] = $value;
-			}
-		}
+    public function getCreatePageParams($book_id, $params) {
+        //
+    }
+
+	public function getCreateLineParams($book_id, $params, $page_id) {
+        $section_count = 0;
+        $line_count = 0;
+        $inputs = [];
+        $final_array = [];
+        for($i = 1; $i <= count($params); $i++) {
+            if (isset($params['section_' . $i])) {
+                $section_count++;
+                for ($j = 1; $j < count($params); $j++) {
+                    if (isset($params['line_' . $i . '_' . $j])) {
+                        $line_count++;
+                    }
+                }
+            }
+        }
+        for($i = 1; $i <= $section_count; $i++) {
+            if(isset($params['section_'.$i])) {
+                for($j = 1; $j < $line_count; $j++) {
+                    if(isset($params['line_'.$i.'_'.$j])) {
+                        $inputs[$i][$j]['section'] = $params['section_'.$i];
+                        $inputs[$i][$j]['book_id'] = $book_id;
+                        $inputs[$i][$j]['page_id'] = $page_id;
+                        $inputs[$i][$j]['text'] = $params['line_'.$i.'_'.$j];
+                    }
+                }
+            }
+
+        }
+        foreach($inputs as $input) {
+            foreach($input as $arr) {
+                $final_array[] = $arr;
+            }
+        }
+        return $final_array;
 	}
 }

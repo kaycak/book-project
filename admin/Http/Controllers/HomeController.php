@@ -23,5 +23,6 @@ class HomeController extends Controller
         if(!\Auth::check()) {
             return redirect('/login');
         }
+        return redirect('/books');
     }
 }
