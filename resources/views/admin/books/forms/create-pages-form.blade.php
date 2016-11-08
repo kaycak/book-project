@@ -27,9 +27,6 @@
     var add_section_click = 1;
     $('.add_element').on('click', function() {
         add_element_click ++;
-        // var div = document.createElement("DIV");
-        // $('div').addClass("div_" + add_element_click);
-        // document.body.appendChild(div);
         var form = document.getElementById("form");
         var input = document.createElement("INPUT");
         input.setAttribute("type", "text");
@@ -45,14 +42,26 @@
     })
 
     $('.add_section').on('click', function() {
+        $('.form_div').append(document.createElement("hr"));
         add_section_click ++;
         add_element_click = 0;
+
+        var div = document.createElement("div");
+        div.setAttribute("class", "form_div_" + add_section_click);
+        $('.form_div').append(div);
+
         var form = document.getElementById("form");
         var input = document.createElement("INPUT");
         input.setAttribute("type", "text");
         input.setAttribute("name", "section_" + add_section_click);
-        $('.form_div').append(input);
-        $('.form_div').append(document.createElement("br"));
-        $('.form_div').append(document.createElement("br"));
+        var label = document.createElement("label");
+        label.innerHTML = 'Add Section';
+        $('.form_div_' + add_section_click).append(label);
+        $('.form_div_' + add_section_click).append(document.createElement("br"));
+        $('.form_div_' + add_section_click).append(document.createElement("br"));
+        $('.form_div_' + add_section_click).append(input);
+        $('.form_div_' + add_section_click).append(document.createElement("br"));
+        $('.form_div_' + add_section_click).append(document.createElement("br"));
+        
     })
 </script>

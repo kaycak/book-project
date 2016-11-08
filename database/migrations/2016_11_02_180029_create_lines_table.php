@@ -15,9 +15,9 @@ class CreateLinesTable extends Migration
     {
         Schema::create('lines', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('page_id');
-            $table->integer('book_id');
-            $table->integer('section_id');
+            $table->bigInteger('page_id');
+            $table->bigInteger('book_id');
+            $table->bigInteger('section_id');
             $table->text('text');
             $table->timestamps();
         });
