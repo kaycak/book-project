@@ -101,7 +101,7 @@ class BooksController extends Controller
         if($bookService->deletBookById($id)) {
             return redirect('/books')->withSuccess('Book has been successfully deleted');
         }
-        return redirect()->back()->withWarning('Ops. Somethin went wrong. Please try a later');
+        return redirect()->back()->withWarning('Ops. Something went wrong. Please try a later');
     }
 
     public function addPage($id, BookService $bookService)
@@ -112,6 +112,9 @@ class BooksController extends Controller
 
     public function postAddPage($id, BookService $bookService, Request $request)
     {
-        $bookService->createPage($id, $request->all());
+        if(null != $bookService->createPage($id, $request->all())){
+            return redirect('/books')->withSuccess('Book has been successfully deleted');
+        }
+        return redirect()->back()->withWarning('Ops. Something went wrong. Please try a later');
     }
 }

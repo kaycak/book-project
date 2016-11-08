@@ -1,11 +1,17 @@
 <?php 
 namespace Admin\Services;
 use App\Models\Book;
+use App\Models\Page;
+use App\Models\Line;
+use App\Models\Section;
 
 class BookService
 {
-	public function __construct(Book $book){
+	public function __construct(Book $book, Page $page, Line $line, Section $section){
 		$this->book = $book;
+        $this->page = $page;
+        $this->line = $line;
+        $this->section = $section;
 	}
 
 	public function getAllBooks() {
@@ -84,17 +90,57 @@ class BookService
 
 	public function createPage($book_id, $params) {
 		$page_params = $this->getCreatePageParams($book_id, $params);
-        $line_params = $this->getCreateLineParams($book_id, $params, 1); //page_id for 1
-		dd($page_params);
+        $page = $this->page->create($page_params);
+        if($page) {
+            $section_params = $this->getCreateSectionParams($book_id, $params);
+            $section = $this->section->insert($section_params);
+            if($section) {
+                $line_params = $this->getCreateLineParams($book_id, $params, $page->id); //page_id for 1
+                return $this->line->insert($line_params);
+            }
+
+        }
+		return null;
 	}
 
     public function getCreatePageParams($book_id, $params) {
-        //
+        $page = $this->page->where('book_id', $book_id)->orderBy('id', 'DESC')->first();
+        if(null != $page) {
+            $page_number = $page->number;
+        } else{
+            $page_number = 0;
+        }
+        $file_name = '';
+        $page_params = [];
+        if(isset($params['img'])) {
+            $file = $params['img'];
+            $file_name = $this->getFileName($file);
+            //$file->move(public_path().'/images/book_images', $file_name);
+        } else {
+            $file_name = 'default.jpg';
+        }
+        $page_params['book_id'] = $book_id;
+        $page_params['image_path'] = $file_name;
+        $page_params['page_number'] = $page_number + 1;
+        return $page_params;
+
+    }
+
+    public function getCreateSectionParams($book_id, $params) {
+        $section = [];
+        for($i = 1; $i <= count($params); $i++) {
+            if (isset($params['section_' . $i])) {
+                $section[$i]['book_id'] = $book_id;
+                $section[$i]['name'] = $params['section_' . $i];
+                $section[$i]['number'] = $i;
+            }
+        }
+        return $section;
     }
 
 	public function getCreateLineParams($book_id, $params, $page_id) {
-        $section_count = 0;
-        $line_count = 0;
+        $section_count = 1;
+        $line_count = 1;
         $inputs = [];
         $final_array = [];
         for($i = 1; $i <= count($params); $i++) {
@@ -107,11 +153,12 @@ class BookService
                 }
             }
         }
-        for($i = 1; $i <= $section_count; $i++) {
+       // dd($section_count, $line_count);
+        for($i = 1; $i < $section_count; $i++) {
             if(isset($params['section_'.$i])) {
                 for($j = 1; $j < $line_count; $j++) {
                     if(isset($params['line_'.$i.'_'.$j])) {
-                        $inputs[$i][$j]['section'] = $params['section_'.$i];
+                        $inputs[$i][$j]['section_id'] = $i;
                         $inputs[$i][$j]['book_id'] = $book_id;
                         $inputs[$i][$j]['page_id'] = $page_id;
                         $inputs[$i][$j]['text'] = $params['line_'.$i.'_'.$j];

@@ -9,10 +9,10 @@
             <br/><br/>
             {!! Form::text('line_1_1', null) !!}
             <br/><br/>
-            {!! Form::label('img_1', 'Upload image or set url') !!}
+            {!! Form::label('img', 'Upload image or set url') !!}
             <br/><br/>
-            {!! Form::file('img_1', null) !!}
-            {!!Form::text('url_1', null) !!}
+            {!! Form::file('img', null) !!}
+            {!!Form::text('url', null) !!}
             <br/><br/>
         </div> 
         <div class="buttons_div">
@@ -74,15 +74,15 @@
         $('.form_div_' + add_section_click).append(document.createElement("br"));
         $('.form_div_' + add_section_click).append(document.createElement("br"));
 
-        var img = document.createElement("input");
-        img.setAttribute("type", "file");
-        img.setAttribute("name", "img_" + add_section_click);
-        var url = document.createElement("input");
-        url.setAttribute("name", "url_" + add_section_click);
-        $('.form_div_' + add_section_click).append(img);
-        $('.form_div_' + add_section_click).append(url);
-        $('.form_div_' + add_section_click).append(document.createElement("br"));
-        $('.form_div_' + add_section_click).append(document.createElement("br"));
+//        var img = document.createElement("input");
+//        img.setAttribute("type", "file");
+//        img.setAttribute("name", "img_" + add_section_click);
+//        var url = document.createElement("input");
+//        url.setAttribute("name", "url_" + add_section_click);
+//        $('.form_div_' + add_section_click).append(img);
+//        $('.form_div_' + add_section_click).append(url);
+//        $('.form_div_' + add_section_click).append(document.createElement("br"));
+//        $('.form_div_' + add_section_click).append(document.createElement("br"));
         
     })
 </script>

@@ -1,3 +1,5 @@
+<h1>need to use transactions and for all cikls do one function that receive argument model and depends it return result array</h1>
+
 <form method="POST" action="/auth/login">
     {!! csrf_field() !!}
 
