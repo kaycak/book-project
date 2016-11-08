@@ -19,7 +19,7 @@ class BookService
 			$file_name = $this->getFileName($file);
 			$file->move(public_path().'/images/book_images', $file_name);
 		} else {
-			$file_name = '';
+			$file_name = 'default.jpg';
 		}
 		$inputs = $this->getBookCreateParams($params, $file_name);
 		
@@ -80,5 +80,24 @@ class BookService
 			}
 		}
 		return '';
+	}
+
+	public function createPage($book_id, $params) {
+		$page_params = $this->getCreatePageParams($params);
+		dd($page_params);
+	}
+
+	public function getCreatePageParams($params) {
+		dd('a');
+		$i = 1;
+		$section = 'section';
+		$line = 'line_'
+		$sections = [];
+		$section_lines = [];
+		foreach ($params as $key => $value) {
+			if($key == $section.'_'.$i) {
+				$sections[$i] = $value;
+			}
+		}
 	}
 }

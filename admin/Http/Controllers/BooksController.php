@@ -112,6 +112,6 @@ class BooksController extends Controller
 
     public function postAddPage($id, BookService $bookService, Request $request)
     {
-        dd($id, $request->all());
+        $bookService->createPage($id, $request->all());
     }
 }
