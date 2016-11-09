@@ -34,7 +34,7 @@ class PagesController extends Controller
      */
     public function create()
     {
-        return view('admin.books.create');
+        //
     }
 
     /**
@@ -56,7 +56,7 @@ class PagesController extends Controller
      */
     public function show($id)
     {
-        //
+        return view('admin.pages.show');
     }
 
     /**

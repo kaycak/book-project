@@ -61,8 +61,8 @@ class BooksController extends Controller
     public function show($id, BookService $bookService)
     {
         $book = $bookService->getBookById($id);
-        dd($book->pages->first()->sections->first()->lines);
-        return view('admin.books.show', ['book' => $book]);
+        $pages = $bookService->getBookPagesPaginate($id);
+        return view('admin.books.show', ['book' => $book, 'pages' => $pages]);
     }
 
     /**

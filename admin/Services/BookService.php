@@ -123,7 +123,7 @@ class BookService
         if(isset($params['img'])) {
             $file = $params['img'];
             $file_name = $this->getFileName($file);
-            //$file->move(public_path().'/images/book_images', $file_name);
+            $file->move(public_path().'/images/page_images', $file_name);
         } else {
             $file_name = 'default.jpg';
         }
@@ -183,4 +183,8 @@ class BookService
         }
         return $final_array;
 	}
+
+    public function getBookPagesPaginate($book_id, $paginate = 10) {
+        return $this->page->where('book_id', $book_id)->paginate($paginate);
+    }
 }
