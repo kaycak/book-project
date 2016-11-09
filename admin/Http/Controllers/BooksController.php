@@ -60,6 +60,7 @@ class BooksController extends Controller
     public function show($id, BookService $bookService)
     {
         $book = $bookService->getBookById($id);
+        dd($book->pages->first()->sections->first()->lines);
         return view('admin.books.show', ['book' => $book]);
     }
 
@@ -113,7 +114,7 @@ class BooksController extends Controller
     public function postAddPage($id, BookService $bookService, Request $request)
     {
         if(null != $bookService->createPage($id, $request->all())){
-            return redirect('/books')->withSuccess('Book has been successfully deleted');
+            return redirect('/books')->withSuccess('Page has been successfully created');
         }
         return redirect()->back()->withWarning('Ops. Something went wrong. Please try a later');
     }

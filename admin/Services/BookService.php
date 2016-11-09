@@ -92,7 +92,7 @@ class BookService
 		$page_params = $this->getCreatePageParams($book_id, $params);
         $page = $this->page->create($page_params);
         if($page) {
-            $section_params = $this->getCreateSectionParams($book_id, $params);
+            $section_params = $this->getCreateSectionParams($book_id, $params, $page);
             $section = $this->section->insert($section_params);
             if($section) {
                 $line_params = $this->getCreateLineParams($book_id, $params, $page->id); //page_id for 1
@@ -126,10 +126,11 @@ class BookService
 
     }
 
-    public function getCreateSectionParams($book_id, $params) {
+    public function getCreateSectionParams($book_id, $params, $page) {
         $section = [];
         for($i = 1; $i <= count($params); $i++) {
             if (isset($params['section_' . $i])) {
+                $section[$i]['page_id'] = $page->id;
                 $section[$i]['book_id'] = $book_id;
                 $section[$i]['name'] = $params['section_' . $i];
                 $section[$i]['number'] = $i;

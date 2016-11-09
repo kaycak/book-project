@@ -13,4 +13,14 @@ class Page extends Model
         'page_number',
         'image_path'
     ];
+
+    public function sections()
+    {
+    	return $this->hasMany('App\\Models\\Section', 'page_id', 'id');
+    }
+
+    public function lines()
+    {
+    	return $this->hasMany('App\\Models\\Line', 'page_id', 'id');
+    }
 }
