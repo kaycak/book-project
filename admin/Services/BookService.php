@@ -4,6 +4,8 @@ use App\Models\Book;
 use App\Models\Page;
 use App\Models\Line;
 use App\Models\Section;
+use DB;
+use App\Exceptions\Custom\FailedTransactionException;
 
 class BookService
 {
@@ -90,15 +92,21 @@ class BookService
 
 	public function createPage($book_id, $params) {
 		$page_params = $this->getCreatePageParams($book_id, $params);
-        $page = $this->page->create($page_params);
-        if($page) {
+
+        DB::beginTransaction();
+        try {
+            $page = $this->page->create($page_params);
             $section_params = $this->getCreateSectionParams($book_id, $params, $page);
             $section = $this->section->insert($section_params);
-            if($section) {
-                $line_params = $this->getCreateLineParams($book_id, $params, $page->id); //page_id for 1
-                return $this->line->insert($line_params);
-            }
-
+            $line_params = $this->getCreateLineParams($book_id, $params, $page->id);
+            $line = $this->line->insert($line_params);
+            DB::commit();
+            return $line;
+        }
+        catch(\Exception $e)
+        {
+            DB::rollback();
+            throw new FailedTransactionException('line create failed', -1);
         }
 		return null;
 	}

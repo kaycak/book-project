@@ -19,4 +19,14 @@ class Section extends Model
     {
     	return $this->hasMany('App\\Models\\Line', 'section_id', 'id');
     }
+
+    public function page()
+    {
+        return $this->belongsTo('App\\Models\\Page', 'page_id', 'id');
+    }
+
+    public function book()
+    {
+        return $this->belongsTo('App\\Models\\Book', 'book_id', 'id');
+    }
 }

@@ -23,4 +23,9 @@ class Page extends Model
     {
     	return $this->hasMany('App\\Models\\Line', 'page_id', 'id');
     }
+
+    public function book()
+    {
+        return $this->belongsTo('App\\Models\\Book', 'book_id', 'id');
+    }
 }

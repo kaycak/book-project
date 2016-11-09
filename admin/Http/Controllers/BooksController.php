@@ -8,6 +8,7 @@ use App\Http\Requests;
 use Admin\Http\Requests\BookRequest;
 use App\Http\Controllers\Controller;
 use Admin\Services\BookService;
+use App\Exceptions\Custom\FailedTransactionException;
 
 class BooksController extends Controller
 {
@@ -113,9 +114,16 @@ class BooksController extends Controller
 
     public function postAddPage($id, BookService $bookService, Request $request)
     {
-        if(null != $bookService->createPage($id, $request->all())){
-            return redirect('/books')->withSuccess('Page has been successfully created');
+        try {
+            if(null != $bookService->createPage($id, $request->all())){
+                return redirect('/books')->withSuccess('Page has been successfully created');
+            }
         }
-        return redirect()->back()->withWarning('Ops. Something went wrong. Please try a later');
+        catch(FailedTransactionException $e)
+        {
+            if($e->getCode() === -1) {
+                return redirect()->back()->withWarning('Ops. Something went wrong. Please try a later');
+            }
+        }
     }
 }
